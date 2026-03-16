@@ -5,13 +5,13 @@ from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Contact_lead
-from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.renderers import TemplateHTMLRenderer,JSONRenderer
 from .serializers import Contact_leadSerializer
-from rest_framework import status
+
 
 
 class ContactList(APIView):
-    renderer_classes = [TemplateHTMLRenderer]
+    renderer_classes = [JSONRenderer, TemplateHTMLRenderer]
     template_name = "leads_page.html"
 
     def get(self, request):
@@ -33,13 +33,13 @@ class ContactList(APIView):
 
 
 class EditLeadContact(APIView):
-    renderer_classes = [TemplateHTMLRenderer]
+    renderer_classes = [JSONRenderer, TemplateHTMLRenderer]
     template_name="edit_lead.html"
     def get(self, request, pk):
         contact = get_object_or_404(Contact_lead, pk=pk)
         return Response({"contact":contact})
 
-    def put(self, request, pk):
+    def post(self, request, pk):
         contact = get_object_or_404(Contact_lead, pk=pk)
 
         serializer = Contact_leadSerializer(
@@ -50,13 +50,16 @@ class EditLeadContact(APIView):
 
         if serializer.is_valid():
             serializer.save()
+            
 
             return Response({
                 "success": "Lead updated successfully",
                 "data": serializer.data
             })
-
+            
         return Response(serializer.errors)
+       
+
 
 
 
@@ -65,18 +68,25 @@ class EditLeadContact(APIView):
 
 class DeleteLeadManagement(APIView):
 
-    def get(self, request):
-
-        delete_id = request.GET.get("delete_id")
-
-        if delete_id:
-            Contact_lead.objects.filter(id=delete_id).delete()
-            return redirect("contact_lead")
+    def get(self, request, id=None):
 
         selected_ids = request.GET.get("selected_ids")
 
         if selected_ids:
             ids = selected_ids.split(",")
             Contact_lead.objects.filter(id__in=ids).delete()
+            return redirect("contact_lead")
+
+        if id:
+            contact = get_object_or_404(Contact_lead, id=id)
+            return render(request, "delete.html", {"contact": contact})
+
+        return redirect("contact_lead")
+
+
+    def post(self, request, id):
+
+        contact = get_object_or_404(Contact_lead, id=id)
+        contact.delete()
 
         return redirect("contact_lead")

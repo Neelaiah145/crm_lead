@@ -2,393 +2,432 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRM Lead Manager</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Lead Manager</title>
 
-<style>
+    <style>
+        /* GLOBAL */
 
-/* GLOBAL */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        body {
+            background: #f4f6fb;
+            color: #333;
+        }
+
+        /* HEADER */
+        .header {
+            background: #2f3e9e;
+            color: white;
+            padding: 14px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* LEFT */
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .logo {
+            font-size: 24px;
+        }
+
+        /* RIGHT ADMIN PROFILE */
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 10px;
+            border-radius: 8px;
+        }
+
+        .admin-img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .admin-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .admin-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .admin-welcome {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        /* MAIN */
+
+        .main {
+            padding: 30px 40px;
+        }
+
+        /* CARD */
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        /* TOP BAR */
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .tools {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        /* SEARCH */
+
+        .search-input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 220px;
+        }
+
+        /* BUTTONS */
+
+        .btn {
+            background: #2f3e9e;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            background: #e11d48;
+            display: none;
+        }
+
+        /* TABLE */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        thead {
+            background: #f1f3f7;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e4e6ea;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        /* COLUMN WIDTH */
+
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 50px;
+            text-align: center;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 70px;
+            text-align: center;
+        }
+
+        th:nth-child(3) {
+            width: 180px;
+        }
+
+        th:nth-child(4) {
+            width: 220px;
+        }
+
+        th:nth-child(5) {
+            width: 150px;
+        }
+
+        th:nth-child(6) {
+            width: 100px;
+            text-align: center;
+        }
+
+        th:nth-child(7) {
+            width: 180px;
+            text-align: center;
+        }
+
+        /* STATUS */
+
+        .status {
+            background: #22c55e;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        /* ACTION BUTTONS */
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .delete-row-btn {
+            background: #dc2626;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .update-row-btn {
+            background: #2681dc;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        /* ROW HOVER */
+
+        tbody tr:hover {
+            background: #f7f8fc;
+        }
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #777;
+        }
+    </style>
+
+    <script>
+
+
+        /* SHOW BULK DELETE BUTTON */
+
+        function toggleBulkButton() {
+
+            let checked = document.querySelectorAll(".lead-check:checked").length;
+            let btn = document.getElementById("bulkDeleteBtn");
+
+            if (checked >= 2) {
+                btn.style.display = "inline-block";
+            } else {
+                btn.style.display = "none";
+            }
+
+        }
+
+        /* SELECT ALL */
+
+        function selectAll(source) {
+
+            let checkboxes = document.querySelectorAll(".lead-check");
+
+            checkboxes.forEach(cb => {
+                cb.checked = source.checked;
+            });
+
+            toggleBulkButton();
+
+        }
+
+        /* BULK DELETE */
+
+function bulkDelete() {
+
+    let ids = [];
+
+    document.querySelectorAll(".lead-check:checked").forEach(cb => {
+        ids.push(cb.value);
+    });
+
+    let url = "{% url 'delete_leads' %}?selected_ids=" + ids.join(",");
+
+    window.location.href = url;
+
 }
 
-body{
-background:#f4f6fb;
-color:#333;
-}
 
-/* HEADER */
 
-.header{
-background:#2f3e9e;
-color:white;
-padding:18px 40px;
-font-size:20px;
-font-weight:500;
-}
-
-/* MAIN */
-
-.main{
-padding:30px 40px;
-}
-
-/* CARD */
-
-.card{
-background:white;
-padding:25px;
-border-radius:8px;
-box-shadow:0 3px 10px rgba(0,0,0,0.08);
-}
-
-/* TOP BAR */
-
-.top-bar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-}
-
-.tools{
-display:flex;
-gap:10px;
-align-items:center;
-}
-
-/* SEARCH */
-
-.search-input{
-padding:8px 12px;
-border:1px solid #ddd;
-border-radius:6px;
-width:220px;
-}
-
-/* BUTTONS */
-
-.btn{
-background:#2f3e9e;
-color:white;
-padding:8px 16px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-}
-
-.delete-btn{
-background:#e11d48;
-display:none;
-}
-
-/* TABLE */
-
-table{
-width:100%;
-border-collapse:collapse;
-table-layout:fixed;
-}
-
-thead{
-background:#f1f3f7;
-}
-
-th,td{
-padding:14px;
-border-bottom:1px solid #e4e6ea;
-font-size:14px;
-text-align:left;
-}
-
-th{
-font-weight:600;
-}
-
-/* COLUMN WIDTH */
-
-th:nth-child(1),
-td:nth-child(1){
-width:50px;
-text-align:center;
-}
-
-th:nth-child(2),
-td:nth-child(2){
-width:70px;
-text-align:center;
-}
-
-th:nth-child(3){
-width:180px;
-}
-
-th:nth-child(4){
-width:220px;
-}
-
-th:nth-child(5){
-width:150px;
-}
-
-th:nth-child(6){
-width:100px;
-text-align:center;
-}
-
-th:nth-child(7){
-width:180px;
-text-align:center;
-}
-
-/* STATUS */
-
-.status{
-background:#22c55e;
-color:white;
-padding:4px 10px;
-border-radius:20px;
-font-size:12px;
-}
-
-/* ACTION BUTTONS */
-
-.actions{
-display:flex;
-justify-content:center;
-gap:6px;
-}
-
-.delete-row-btn{
-background:#dc2626;
-color:white;
-padding:6px 10px;
-border-radius:5px;
-text-decoration:none;
-font-size:13px;
-}
-
-.update-row-btn{
-background:#2681dc;
-color:white;
-padding:6px 10px;
-border-radius:5px;
-text-decoration:none;
-font-size:13px;
-}
-
-/* ROW HOVER */
-
-tbody tr:hover{
-background:#f7f8fc;
-}
-
-/* FOOTER */
-
-.footer{
-text-align:center;
-margin-top:20px;
-font-size:13px;
-color:#777;
-}
-
-</style>
-
-<script>
-
-/* SHOW BULK DELETE BUTTON */
-
-function toggleBulkButton(){
-
-let checked=document.querySelectorAll(".lead-check:checked").length;
-let btn=document.getElementById("bulkDeleteBtn");
-
-if(checked>=2){
-btn.style.display="inline-block";
-}else{
-btn.style.display="none";
-}
-
-}
-
-/* SELECT ALL */
-
-function selectAll(source){
-
-let checkboxes=document.querySelectorAll(".lead-check");
-
-checkboxes.forEach(cb=>{
-cb.checked=source.checked;
-});
-
-toggleBulkButton();
-
-}
-
-/* BULK DELETE */
-
-function bulkDelete(){
-
-let ids=[];
-
-document.querySelectorAll(".lead-check:checked").forEach(cb=>{
-ids.push(cb.value);
-});
-
-let url="{% url 'delete_leads' %}?selected_ids="+ids.join(",");
-
-window.location.href=url;
-
-}
-
-/* SEARCH */
-
-function searchLeads(){
-
-let input=document.getElementById("searchInput").value.toLowerCase();
-let rows=document.querySelectorAll("#leadTable tbody tr");
-
-rows.forEach(row=>{
-let text=row.innerText.toLowerCase();
-
-if(text.includes(input)){
-row.style.display="";
-}else{
-row.style.display="none";
-}
-});
-
-}
-
-</script>
+    </script>
 
 </head>
 
 <body>
+    <div class="header">
 
-<div class="header">
-CRM Lead Manager
-</div>
+        <div class="header-left">
+            <span class="logo">📊</span>
+            <span class="company-name">CRM Lead Manager</span>
+        </div>
 
-<div class="main">
+        <div class="header-right">
 
-<div class="card">
+            <div class="admin-profile">
 
-<div class="top-bar">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="admin-img">
 
-<h3>Contact Leads</h3>
+                <div class="admin-info">
+                    <span class="admin-name">Admin</span>
+                    <span class="admin-welcome">Neeli Rusum</span>
+                </div>
 
-<div class="tools">
+            </div>
 
-<input id="searchInput"
-type="text"
-placeholder="Search leads..."
-class="search-input"
-onkeyup="searchLeads()">
+        </div>
 
-<button id="bulkDeleteBtn"
-class="btn delete-btn"
-onclick="bulkDelete()">
-Delete Selected
-</button>
+    </div>
+    <div class="main">
 
-</div>
+        <div class="card">
 
-</div>
+            <div class="top-bar">
 
-<table id="leadTable">
+                <h3>Contact Leads</h3>
 
-<thead>
+                <div class="tools">
 
-<tr>
+                    <input id="searchInput" type="text" placeholder="Search leads..." class="search-input"
+                        onkeyup="searchLeads()">
 
-<th>
-<input type="checkbox" onclick="selectAll(this)">
-</th>
+                    <button id="bulkDeleteBtn" class="btn delete-btn" onclick="bulkDelete()">
+                        Delete Selected
+                    </button>
 
-<th>Sl.No</th>
-<th>Name</th>
-<th>Email</th>
-<th>Phone</th>
-<th>Status</th>
-<th>Actions</th>
+                </div>
 
-</tr>
+            </div>
 
-</thead>
+            <table id="leadTable">
 
-<tbody>
+                <thead>
 
-{% for contact in contacts %}
+                    <tr>
 
-<tr>
+                        <th>
+                            <input type="checkbox" onclick="selectAll(this)">
+                        </th>
 
-<td>
-<input
-type="checkbox"
-class="lead-check"
-value="{{ contact.id }}"
-onclick="toggleBulkButton()">
-</td>
+                        <th>Sl.No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Actions</th>
 
-<td>{{ forloop.counter }}</td>
+                    </tr>
 
-<td>{{ contact.name }}</td>
+                </thead>
 
-<td>{{ contact.email }}</td>
+                <tbody>
 
-<td>{{ contact.phone_number }}</td>
+                    {% for contact in contacts %}
 
-<td>
-<span class="status">New</span>
-</td>
+                    <tr>
 
-<td>
+                        <td>
+                            <input type="checkbox" class="lead-check" value="{{ contact.id }}"
+                                onclick="toggleBulkButton()">
+                        </td>
 
-<div class="actions">
+                        <td>{{ forloop.counter }}</td>
 
-<a href="{% url 'delete_leads' %}?delete_id={{ contact.id }}"
-class="delete-row-btn">
-Delete
-</a>
+                        <td>{{ contact.name }}</td>
 
-<a href="{% url 'edit_lead' contact.id %}"
-class="update-row-btn">
-Update
-</a>
+                        <td>{{ contact.email }}</td>
 
-</div>
+                        <td>{{ contact.phone_number }}</td>
 
-</td>
+                        <td>
+                            <span class="status">{{ contact.status }}</span>
+                        </td>
 
-</tr>
+                        <td>
 
-{% empty %}
+                            <div class="actions">
 
-<tr>
-<td colspan="7" style="text-align:center;padding:20px;">
-No leads available
-</td>
-</tr>
+                                <a href="{% url 'delete_lead' contact.id %}" class="delete-row-btn">
+                                    Delete
+                                </a>
 
-{% endfor %}
+                                <a href="{% url 'edit_lead' contact.id %}" class="update-row-btn">
+                                    Update
+                                </a>
 
-</tbody>
+                            </div>
 
-</table>
+                        </td>
 
-</div>
+                    </tr>
 
-<div class="footer">
-©2026 - CRM Lead Management System
-</div>
+                    {% empty %}
 
-</div>
+                    <tr>
+                        <td colspan="7" style="text-align:center;padding:20px;">
+                            No leads available
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="footer">
+            ©2026 - CRM Lead Management System
+        </div>
+
+    </div>
 
 </body>
 

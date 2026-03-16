@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Lead</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f4f6fb;
+            color: #333;
+        }
+
+        /* HEADER */
+        .header {
+            background: #2f3e9e;
+            color: white;
+            padding: 18px 40px;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        /* PAGE CENTER */
+        .page {
+            min-height: calc(100vh - 60px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        /* MODAL CARD */
+        .modal {
+            background: white;
+            border-radius: 12px;
+            border: 0.5px solid #e0e0e0;
+            width: 100%;
+            max-width: 420px;
+            overflow: hidden;
+        }
+
+        /* MODAL HEADER */
+        .modal-header {
+            background: #fff1f2;
+            padding: 20px 24px 16px;
+            border-bottom: 0.5px solid #fecdd3;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .warn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fee2e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .warn-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 17px;
+            font-weight: 500;
+            color: #991b1b;
+            margin: 0;
+        }
+
+        .modal-header p {
+            font-size: 13px;
+            color: #b91c1c;
+            margin: 4px 0 0;
+        }
+
+        /* MODAL BODY */
+        .modal-body {
+            padding: 24px;
+        }
+
+        /* LEAD INFO CARD */
+        .lead-card {
+            background: #f8faff;
+            border: 0.5px solid #dbeafe;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .lead-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .lead-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 15px;
+            color: #1e40af;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .lead-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .lead-email {
+            font-size: 12px;
+            color: #64748b;
+            margin: 2px 0 0;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            border-top: 0.5px solid #e2e8f0;
+            font-size: 13px;
+        }
+
+        .info-label {
+            color: #94a3b8;
+            width: 70px;
+            flex-shrink: 0;
+        }
+
+        .info-val {
+            color: #334155;
+            font-weight: 500;
+        }
+
+        /* WARNING TEXT */
+        .warn-text {
+            font-size: 13px;
+            color: #64748b;
+            background: #fffbeb;
+            border: 0.5px solid #fde68a;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 20px;
+        }
+
+        /* BUTTONS */
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            background: white;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-cancel:hover {
+            background: #f9fafb;
+        }
+
+        .btn-delete {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 7px;
+            background: #dc2626;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-delete:hover {
+            background: #b91c1c;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        CRM Lead Manager
+    </div>
+
+    <div class="page">
+        <div class="modal">
+
+            <!-- MODAL HEADER -->
+            <div class="modal-header">
+                <div class="warn-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
+                        <line x1="10" y1="11" x2="10" y2="17" />
+                        <line x1="14" y1="11" x2="14" y2="17" />
+                    </svg>
+                </div>
+                <div>
+                    <h2>Delete Lead</h2>
+                    <p>This action cannot be undone</p>
+                </div>
+            </div>
+
+            <!-- MODAL BODY -->
+            <div class="modal-body">
+
+                <!-- LEAD DETAILS CARD -->
+                <div class="lead-card">
+                    <div class="lead-info">
+                        <div class="lead-avatar">
+                            {{ contact.name|slice:":2" }}
+                        </div>
+                        <div>
+                            <p class="lead-name">{{ contact.name }}</p>
+                            <p class="lead-email">{{ contact.email }}</p>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Phone</span>
+                        <span class="info-val">{{ contact.phone_number }}</span>
+                    </div>
+
+                </div>
+
+                <!-- WARNING MESSAGE -->
+                <div class="warn-text">
+                    Are you sure you want to delete this lead? All data related to
+                    this contact will be permanently removed.
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <form method="POST">
+                    {% csrf_token %}
+
+
+
+                    <a href="{% url 'contact_lead' %}" class="btn-cancel">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn-delete">
+                        Yes, Delete
+                    </button>
+
+
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+</body>
+
+</html>

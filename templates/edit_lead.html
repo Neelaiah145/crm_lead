@@ -30,17 +30,19 @@
                                 class="form-select">
                                 <option value="new" {% if contact.status == "new" %}selected{% endif %}>New</option>
                                 <option value="In_Progress" {% if contact.status == "in_progress" %}selected{% endif %}>
-                                    Contacted</option>
+                                    in_progress</option>
                                 <option value="interest" {% if contact.status == "interest" %}selected{% endif %}>
-                                    Interested</option>
-                                <option value="closed" {% if contact.status == "closed" %}selected{% endif %}>Closed</option>
+                                    interest</option>
+                                <option value="closed" {% if contact.status == "closed" %}selected{% endif %}>closed</option>
                             </select> </div> <!-- Notes -->
                         <div class="mb-3"> <label class="form-label">Meaasge</label> <textarea name="message"
                                 class="form-control" rows="3">{{ contact.message }}</textarea> </div> <!-- Buttons -->
 
                         <div class="d-flex justify-content-between"> <a href="/"
-                                class="btn btn-secondary">Cancel</a> <button type="submit"
-                                class="btn btn-success">Update Lead</button> </div>
+                                class="btn btn-secondary">Cancel</a>  
+                                <a href="/"><button type="submit"
+                                class="btn btn-success">Update Lead</button> </a>
+                        </div>
                     </form>
                 </div>
             </div>
