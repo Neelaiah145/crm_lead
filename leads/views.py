@@ -29,6 +29,9 @@ class ContactList(APIView):
         return Response(serializer.errors)
 
 
+
+
+
 class EditLeadContact(APIView):
     renderer_classes = [TemplateHTMLRenderer]
     template_name="edit_lead.html"
@@ -56,6 +59,10 @@ class EditLeadContact(APIView):
         return Response(serializer.errors)
 
 
+
+
+
+
 class DeleteLeadManagement(APIView):
 
     def get(self, request):
@@ -64,7 +71,7 @@ class DeleteLeadManagement(APIView):
 
         if delete_id:
             Contact_lead.objects.filter(id=delete_id).delete()
-            return redirect("contact_lead/")
+            return redirect("contact_lead")
 
         selected_ids = request.GET.get("selected_ids")
 
