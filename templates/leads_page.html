@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRM Lead Manager</title>
+
+<style>
+
+/* GLOBAL */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+background:#f4f6fb;
+color:#333;
+}
+
+/* HEADER */
+
+.header{
+background:#2f3e9e;
+color:white;
+padding:18px 40px;
+font-size:20px;
+font-weight:500;
+}
+
+/* MAIN */
+
+.main{
+padding:30px 40px;
+}
+
+/* CARD */
+
+.card{
+background:white;
+padding:25px;
+border-radius:8px;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* TOP BAR */
+
+.top-bar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.tools{
+display:flex;
+gap:10px;
+align-items:center;
+}
+
+/* SEARCH */
+
+.search-input{
+padding:8px 12px;
+border:1px solid #ddd;
+border-radius:6px;
+width:220px;
+}
+
+/* BUTTONS */
+
+.btn{
+background:#2f3e9e;
+color:white;
+padding:8px 16px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.delete-btn{
+background:#e11d48;
+display:none;
+}
+
+.delete-row-btn{
+background:#dc2626;
+color:white;
+padding:6px 10px;
+border-radius:5px;
+text-decoration:none;
+font-size:13px;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+thead{
+background:#f1f3f7;
+}
+
+th,td{
+padding:14px;
+border-bottom:1px solid #e4e6ea;
+}
+
+th:first-child,
+td:first-child{
+text-align:center;
+width:50px;
+}
+
+tbody tr:hover{
+background:#f7f8fc;
+}
+
+/* STATUS */
+
+.status{
+background:#22c55e;
+color:white;
+padding:4px 10px;
+border-radius:20px;
+font-size:12px;
+}
+
+.footer{
+text-align:center;
+margin-top:20px;
+font-size:13px;
+color:#777;
+}
+
+</style>
+
+<script>
+
+/* SHOW BULK BUTTON */
+
+function toggleBulkButton(){
+
+let checked=document.querySelectorAll(".lead-check:checked").length;
+let btn=document.getElementById("bulkDeleteBtn");
+
+if(checked>=2){
+btn.style.display="inline-block";
+}else{
+btn.style.display="none";
+}
+
+}
+
+/* SELECT ALL */
+
+function selectAll(source){
+
+let checkboxes=document.querySelectorAll(".lead-check");
+
+checkboxes.forEach(cb=>{
+cb.checked=source.checked;
+});
+
+toggleBulkButton();
+
+}
+
+/* BULK DELETE */
+
+function bulkDelete(){
+
+let ids=[];
+
+document.querySelectorAll(".lead-check:checked").forEach(cb=>{
+ids.push(cb.value);
+});
+
+let url="{% url 'delete_leads' %}?selected_ids="+ids.join(",");
+
+window.location.href=url;
+
+}
+
+
+</script>
+
+</head>
+
+<body>
+
+<div class="header">
+CRM Lead Manager
+</div>
+
+<div class="main">
+
+<div class="card">
+
+<div class="top-bar">
+
+<h3>Contact Leads</h3>
+
+<div class="tools">
+
+<input
+id="searchInput"
+type="text"
+placeholder="Search leads..."
+class="search-input"
+onkeyup="searchLeads()">
+
+<button
+id="bulkDeleteBtn"
+class="btn delete-btn"
+onclick="bulkDelete()">
+
+Delete Selected
+
+</button>
+
+</div>
+
+</div>
+
+<table id="leadTable">
+
+<thead>
+
+<tr>
+
+<th>
+<input type="checkbox" onclick="selectAll(this)">
+</th>
+
+<th>Sl.No</th>
+<th>Name</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Status</th>
+<th>Delete</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for contact in contacts %}
+
+<tr>
+
+<td>
+
+<input
+type="checkbox"
+class="lead-check"
+value="{{ contact.id }}"
+onclick="toggleBulkButton()">
+
+</td>
+
+<td>{{ forloop.counter }}</td>
+
+<td>{{ contact.name }}</td>
+
+<td>{{ contact.email }}</td>
+
+<td>{{ contact.phone_number }}</td>
+
+<td>
+<span class="status">New</span>
+</td>
+
+<td>
+
+<a href="{% url 'delete_leads' %}?delete_id={{ contact.id }}"
+class="delete-row-btn">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="7" style="text-align:center;padding:20px;">
+No leads available
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="footer">
+@2026 - CRM Lead Management System
+</div>
+
+</div>
+
+</body>
+</html>
