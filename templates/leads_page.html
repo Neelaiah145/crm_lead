@@ -2,314 +2,313 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRM Lead Manager</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Lead Manager</title>
 
-<style>
+    <style>
+        /* GLOBAL */
 
-/* GLOBAL */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
+        body {
+            background: #f4f6fb;
+            color: #333;
+        }
 
-body{
-background:#f4f6fb;
-color:#333;
-}
+        /* HEADER */
 
-/* HEADER */
+        .header {
+            background: #2f3e9e;
+            color: white;
+            padding: 18px 40px;
+            font-size: 20px;
+            font-weight: 500;
+        }
 
-.header{
-background:#2f3e9e;
-color:white;
-padding:18px 40px;
-font-size:20px;
-font-weight:500;
-}
+        /* MAIN */
 
-/* MAIN */
+        .main {
+            padding: 30px 40px;
+        }
 
-.main{
-padding:30px 40px;
-}
+        /* CARD */
 
-/* CARD */
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
 
-.card{
-background:white;
-padding:25px;
-border-radius:8px;
-box-shadow:0 3px 10px rgba(0,0,0,0.08);
-}
+        /* TOP BAR */
 
-/* TOP BAR */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-.top-bar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-}
+        .tools {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
 
-.tools{
-display:flex;
-gap:10px;
-align-items:center;
-}
+        /* SEARCH */
 
-/* SEARCH */
+        .search-input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 220px;
+        }
 
-.search-input{
-padding:8px 12px;
-border:1px solid #ddd;
-border-radius:6px;
-width:220px;
-}
+        /* BUTTONS */
 
-/* BUTTONS */
+        .btn {
+            background: #2f3e9e;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
 
-.btn{
-background:#2f3e9e;
-color:white;
-padding:8px 16px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-}
+        .delete-btn {
+            background: #e11d48;
+            display: none;
+        }
 
-.delete-btn{
-background:#e11d48;
-display:none;
-}
+        .delete-row-btn {
+            background: #dc2626;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .update-row-btn{
+            margin-left: 5px;
+            background: #2681dc;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 13px;
+        }
 
-.delete-row-btn{
-background:#dc2626;
-color:white;
-padding:6px 10px;
-border-radius:5px;
-text-decoration:none;
-font-size:13px;
-}
+        /* TABLE */
 
-/* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-table{
-width:100%;
-border-collapse:collapse;
-}
+        thead {
+            background: #f1f3f7;
+        }
 
-thead{
-background:#f1f3f7;
-}
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e4e6ea;
+        }
 
-th,td{
-padding:14px;
-border-bottom:1px solid #e4e6ea;
-}
+        th:first-child,
+        td:first-child {
+            text-align: center;
+            width: 50px;
+        }
 
-th:first-child,
-td:first-child{
-text-align:center;
-width:50px;
-}
+        tbody tr:hover {
+            background: #f7f8fc;
+        }
 
-tbody tr:hover{
-background:#f7f8fc;
-}
+        /* STATUS */
 
-/* STATUS */
+        .status {
+            background: #22c55e;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
 
-.status{
-background:#22c55e;
-color:white;
-padding:4px 10px;
-border-radius:20px;
-font-size:12px;
-}
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #777;
+        }
+    </style>
 
-.footer{
-text-align:center;
-margin-top:20px;
-font-size:13px;
-color:#777;
-}
+    <script>
 
-</style>
+        /* SHOW BULK BUTTON */
 
-<script>
+        function toggleBulkButton() {
 
-/* SHOW BULK BUTTON */
+            let checked = document.querySelectorAll(".lead-check:checked").length;
+            let btn = document.getElementById("bulkDeleteBtn");
 
-function toggleBulkButton(){
+            if (checked >= 2) {
+                btn.style.display = "inline-block";
+            } else {
+                btn.style.display = "none";
+            }
 
-let checked=document.querySelectorAll(".lead-check:checked").length;
-let btn=document.getElementById("bulkDeleteBtn");
+        }
 
-if(checked>=2){
-btn.style.display="inline-block";
-}else{
-btn.style.display="none";
-}
+        /* SELECT ALL */
 
-}
+        function selectAll(source) {
 
-/* SELECT ALL */
+            let checkboxes = document.querySelectorAll(".lead-check");
 
-function selectAll(source){
+            checkboxes.forEach(cb => {
+                cb.checked = source.checked;
+            });
 
-let checkboxes=document.querySelectorAll(".lead-check");
+            toggleBulkButton();
 
-checkboxes.forEach(cb=>{
-cb.checked=source.checked;
-});
+        }
 
-toggleBulkButton();
+        /* BULK DELETE */
 
-}
+        function bulkDelete() {
 
-/* BULK DELETE */
+            let ids = [];
 
-function bulkDelete(){
+            document.querySelectorAll(".lead-check:checked").forEach(cb => {
+                ids.push(cb.value);
+            });
 
-let ids=[];
+            let url = "{% url 'delete_leads' %}?selected_ids=" + ids.join(",");
 
-document.querySelectorAll(".lead-check:checked").forEach(cb=>{
-ids.push(cb.value);
-});
+            window.location.href = url;
 
-let url="{% url 'delete_leads' %}?selected_ids="+ids.join(",");
-
-window.location.href=url;
-
-}
+        }
 
 
-</script>
+    </script>
 
 </head>
 
 <body>
 
-<div class="header">
-CRM Lead Manager
-</div>
+    <div class="header">
+        CRM Lead Manager
+    </div>
 
-<div class="main">
+    <div class="main">
 
-<div class="card">
+        <div class="card">
 
-<div class="top-bar">
+            <div class="top-bar">
 
-<h3>Contact Leads</h3>
+                <h3>Contact Leads</h3>
 
-<div class="tools">
+                <div class="tools">
 
-<input
-id="searchInput"
-type="text"
-placeholder="Search leads..."
-class="search-input"
-onkeyup="searchLeads()">
+                    <input id="searchInput" type="text" placeholder="Search leads..." class="search-input"
+                        onkeyup="searchLeads()">
 
-<button
-id="bulkDeleteBtn"
-class="btn delete-btn"
-onclick="bulkDelete()">
+                    <button id="bulkDeleteBtn" class="btn delete-btn" onclick="bulkDelete()">
 
-Delete Selected
+                        Delete Selected
 
-</button>
+                    </button>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-<table id="leadTable">
+            <table id="leadTable">
 
-<thead>
+                <thead>
 
-<tr>
+                    <tr>
 
-<th>
-<input type="checkbox" onclick="selectAll(this)">
-</th>
+                        <th>
+                            <input type="checkbox" onclick="selectAll(this)">
+                        </th>
 
-<th>Sl.No</th>
-<th>Name</th>
-<th>Email</th>
-<th>Phone</th>
-<th>Status</th>
-<th>Delete</th>
+                        <th>Sl.No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Delete</th>
 
-</tr>
+                    </tr>
 
-</thead>
+                </thead>
 
-<tbody>
+                <tbody>
 
-{% for contact in contacts %}
+                    {% for contact in contacts %}
 
-<tr>
+                    <tr>
 
-<td>
+                        <td>
 
-<input
-type="checkbox"
-class="lead-check"
-value="{{ contact.id }}"
-onclick="toggleBulkButton()">
+                            <input type="checkbox" class="lead-check" value="{{ contact.id }}"
+                                onclick="toggleBulkButton()">
 
-</td>
+                        </td>
 
-<td>{{ forloop.counter }}</td>
+                        <td>{{ forloop.counter }}</td>
 
-<td>{{ contact.name }}</td>
+                        <td>{{ contact.name }}</td>
 
-<td>{{ contact.email }}</td>
+                        <td>{{ contact.email }}</td>
 
-<td>{{ contact.phone_number }}</td>
+                        <td>{{ contact.phone_number }}</td>
 
-<td>
-<span class="status">New</span>
-</td>
+                        <td>
+                            <span class="status">New</span>
+                        </td>
 
-<td>
+                        <td>
 
-<a href="{% url 'delete_leads' %}?delete_id={{ contact.id }}"
-class="delete-row-btn">
-Delete
-</a>
+                            <a href="{% url 'delete_leads' %}?delete_id={{ contact.id }}" class="delete-row-btn">
+                                Delete
+                            </a>
+                            <a href="{% url 'edit_lead' contact.id %}" class="update-row-btn">Update</a>
 
-</td>
+                        </td>
 
-</tr>
+                    </tr>
 
-{% empty %}
+                    {% empty %}
 
-<tr>
-<td colspan="7" style="text-align:center;padding:20px;">
-No leads available
-</td>
-</tr>
+                    <tr>
+                        <td colspan="7" style="text-align:center;padding:20px;">
+                            No leads available
+                        </td>
+                    </tr>
 
-{% endfor %}
+                    {% endfor %}
 
-</tbody>
+                </tbody>
 
-</table>
+            </table>
 
-</div>
+        </div>
 
-<div class="footer">
-@2026 - CRM Lead Management System
-</div>
+        <div class="footer">
+            @2026 - CRM Lead Management System
+        </div>
 
-</div>
+    </div>
 
 </body>
+
 </html>

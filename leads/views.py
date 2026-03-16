@@ -1,4 +1,5 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from rest_framework.views import APIView
@@ -6,15 +7,17 @@ from rest_framework.response import Response
 from .models import Contact_lead
 from rest_framework.renderers import TemplateHTMLRenderer
 from .serializers import Contact_leadSerializer
+from rest_framework import status
+
 
 class ContactList(APIView):
     renderer_classes = [TemplateHTMLRenderer]
     template_name = "leads_page.html"
+
     def get(self, request):
         contacts = Contact_lead.objects.all()
         serializer = Contact_leadSerializer(contacts, many=True)
-        return Response({"contacts":serializer.data})
-   
+        return Response({"contacts": serializer.data})
 
     def post(self, request):
         serializer = Contact_leadSerializer(data=request.data)
@@ -24,7 +27,34 @@ class ContactList(APIView):
             return Response(serializer.data)
 
         return Response(serializer.errors)
- 
+
+
+class EditLeadContact(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name="edit_lead.html"
+    def get(self, request, pk):
+        contact = get_object_or_404(Contact_lead, pk=pk)
+        return Response({"contact":contact})
+
+    def put(self, request, pk):
+        contact = get_object_or_404(Contact_lead, pk=pk)
+
+        serializer = Contact_leadSerializer(
+            contact,
+            data=request.data,
+            partial=True
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({
+                "success": "Lead updated successfully",
+                "data": serializer.data
+            })
+
+        return Response(serializer.errors)
+
 
 class DeleteLeadManagement(APIView):
 
