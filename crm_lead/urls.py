@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from leads import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',views.ContactList.as_view(),name="contact_lead"),
+    path("delete_leads/", views.DeleteLeadManagement.as_view(), name="delete_leads")
 ]
+
+
