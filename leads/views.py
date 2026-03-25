@@ -51,6 +51,7 @@ class EditLeadContact(APIView):
         if serializer.is_valid():
             serializer.save()
             
+            
 
             return Response({
                 "success": "Lead updated successfully",
@@ -74,7 +75,7 @@ class DeleteLeadManagement(APIView):
 
         if selected_ids:
             ids = selected_ids.split(",")
-            Contact_lead.objects.filter(id__in=ids).delete()
+            Contact_lead.objects.filter(id_in=ids).delete()
             return redirect("contact_lead")
 
         if id:
