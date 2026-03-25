@@ -140,6 +140,7 @@
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
+            
         }
 
         thead {
@@ -244,6 +245,12 @@
             font-size: 13px;
             color: #777;
         }
+
+
+
+
+
+        
     </style>
 
     <script>
@@ -317,6 +324,8 @@ function bulkDelete() {
                 <div class="admin-info">
                     <span class="admin-name">Admin</span>
                     <span class="admin-welcome">Neeli Rusum</span>
+                    <a href = "{% url 'login' %}" style="color:#f31919",>logout</a>
+
                 </div>
 
             </div>
@@ -430,5 +439,6 @@ function bulkDelete() {
     </div>
 
 </body>
+
 
 </html>

@@ -82,6 +82,10 @@ DATABASES = {
 }
 
 
+AUTH_USER_MODEL = 'leads.User'
+
+LOGIN_URL = ''
+LOGOUT_URL = 'logout'
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -122,3 +126,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# AUTHENTICATION perpose
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+    
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  
+    ],
+}

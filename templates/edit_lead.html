@@ -38,7 +38,7 @@
                         <div class="mb-3"> <label class="form-label">Meaasge</label> <textarea name="message"
                                 class="form-control" rows="3">{{ contact.message }}</textarea> </div> <!-- Buttons -->
 
-                        <div class="d-flex justify-content-between"> <a href="/"
+                        <div class="d-flex justify-content-between"> <a href="{% url 'contact_lead' %}"
                                 class="btn btn-secondary">Cancel</a>  
                                 <a href="/"><button type="submit"
                                 class="btn btn-success">Update Lead</button> </a>
